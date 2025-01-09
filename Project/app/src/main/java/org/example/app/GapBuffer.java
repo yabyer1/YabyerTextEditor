@@ -1,3 +1,4 @@
+package org.example.app;
 public class GapBuffer{
      int DEFAULT_BUFFER_SIZE = 100;
     char [] gapBuffer = new char[DEFAULT_BUFFER_SIZE];
@@ -6,7 +7,7 @@ public class GapBuffer{
     int gaptail = 0;
 
     void checkBound(int cur, int amnt){
-        while(cur + amnt >= gapBuffer.length){
+        while(cur + amnt >= gapBuffer.length || cur + amnt > gaptail){
             int amnt_diff = DEFAULT_BUFFER_SIZE - gaptail;
             DEFAULT_BUFFER_SIZE *= 2;
 
@@ -17,6 +18,7 @@ public class GapBuffer{
             gaptail = DEFAULT_BUFFER_SIZE - amnt_diff;
         }
 
+
     }
 void MoveCursor(int cur){
 
@@ -26,7 +28,7 @@ void MoveCursor(int cur){
         if(cur < gaphead){
             int slide = gaphead - cur;
             for(int i = 0; i < slide; i++){
-                gapBuffer[gaptail - 1 - i] = gapBuffer[gaphead -1 -  i];
+                gapBuffer[gaptail - i] = gapBuffer[gaphead  -  i];
             }
             gaphead -= slide;
             gaptail -= slide;
@@ -44,26 +46,22 @@ void MoveCursor(int cur){
 }
 
     void insert(int cur, char [] wrd){
-
-
         MoveCursor(cur);
+        checkBound(cur, wrd.length);
         System.arraycopy(wrd, 0, gapBuffer, cur, wrd.length);
         gaphead += wrd.length;
 
     }
     void backspace(int cur, int n){
         MoveCursor(cur);
-        gaphead  = Math.max(0 ,gaphead -n) ;
+        gaphead  = Math.max(0 , gaphead -n) ;
 
     }
     void forwarddelete(int cur, int n){
         MoveCursor(cur);
-        gaptail = Math.min(gaptail, cur + n)
+        gaptail = Math.min(gaptail, DEFAULT_BUFFER_SIZE);
     }
 
 
-
-}
-public static void main(String[] args) {
 
 }
