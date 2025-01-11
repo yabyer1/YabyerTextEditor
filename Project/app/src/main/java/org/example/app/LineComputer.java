@@ -2,51 +2,53 @@ package org.example.app;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class Line {
-    String check = "example";
-    Font b = new Font(check, 10, 12);
+public class LineComputer {
 
-    FontMetrics f =  new FontMetrics(b) {
-        /**
-         * Gets the {@code Font} described by this
-         * {@code FontMetrics} object.
-         *
-         * @return the {@code Font} described by this
-         * {@code FontMetrics} object.
-         */
-        @Override
-        public Font getFont() {
-            return super.getFont();
-        }
-    };
-   public int ComputeIndex(GapBuffer gapbuff, int x, int y){
-        int curX = 0;
-        int curY = 0;
 
+
+   public ArrayList<LineNode> ReComputeIndex(GapBuffer gapbuff, FontMetrics f){
+
+
+       ArrayList<LineNode> fin = new ArrayList<>();
        int i = 0;
-       int vert_height = f.getHeight();
+     //  int vert_height = f.getHeight();
        while(i < gapbuff.gaphead) {
            int line = i;
            int linewidth = 0;
-           if (curY == (int) (double) (y / vert_height)) {
+            LineNode t = new LineNode();
+            t.Sindex = line;
                while (line < gapbuff.gaphead && gapbuff.gapBuffer[line] != '\n') {
                    linewidth += f.charWidth(gapbuff.gapBuffer[line]);
+                   t.pos.add(linewidth);
                    line++;
-               }
-           } else {
-               while (line < gapbuff.gaphead && gapbuff.gapBuffer[line] != '\n') {
 
-                   line++;
                }
-           }
            i = line;
-           curY += vert_height;
+               if(i < gapbuff.gaphead && gapbuff.gapBuffer[i] == '\n')
+                   i++;
+           fin.add(t);
+
+
        }
        i = gapbuff.gaptail;
-       while(i < gapbuff.DEFAULT_BUFFER_SIZE){
+       while(i < gapbuff.DEFAULT_BUFFER_SIZE) {
+           int line = i;
+           int linewidth = 0;
+           LineNode t = new LineNode();
+           t.Sindex = line;
+           while (line < gapbuff.DEFAULT_BUFFER_SIZE && gapbuff.gapBuffer[line] != '\n') {
+               linewidth += f.charWidth(gapbuff.gapBuffer[line]);
+               t.pos.add(linewidth);
+               line++;
 
+           }
+            fin.add(t);
+           i = line;
+           if (i < gapbuff.DEFAULT_BUFFER_SIZE && gapbuff.gapBuffer[i] == '\n') {
+               i++;
+           }
        }
+       return fin;
    }
 }
