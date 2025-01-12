@@ -58,7 +58,7 @@ public class GapBuffer {
     void insert(int cur, char[] wrd, FontMetrics q) {
         MoveCursor(cur);
         checkBound(cur, wrd.length);
-        System.arraycopy(wrd, 0, gapBuffer, cur, wrd.length);
+        System.arraycopy(wrd, 0, gapBuffer, gaphead, wrd.length);
         gaphead += wrd.length;
        lineIndex =  computer.ReComputeIndex(this, q);
     }
@@ -67,6 +67,9 @@ public class GapBuffer {
         MoveCursor(cur);
 
         gaphead = Math.max(0, gaphead - n);
+        for (int i = gaphead; i < gaptail; i++) {
+            gapBuffer[i] = '\0';
+        }
 
         lineIndex =  computer.ReComputeIndex(this, p);
 
