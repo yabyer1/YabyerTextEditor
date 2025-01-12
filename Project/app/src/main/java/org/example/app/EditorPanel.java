@@ -53,8 +53,16 @@ public class EditorPanel extends JPanel {
                 gapbuffer.forwarddelete(cursorPos, 1, f);
                 repaint();
                 break;
+            case KeyEvent.VK_ENTER:
+
+                gapbuffer.insert(cursorPos, new char[]{'\n'}, f);
+                cursorPos++;
+                repaint();
+                break;
+
             default:
                 if(!Character.isISOControl(c)){
+                    System.out.println("character is " + c);
                     char [] ar = new char[1];
                     ar[0] = c;
                     gapbuffer.insert(cursorPos,ar, f);

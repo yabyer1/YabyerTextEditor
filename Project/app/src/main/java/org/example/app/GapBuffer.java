@@ -67,9 +67,9 @@ public class GapBuffer {
         MoveCursor(cur);
 
         gaphead = Math.max(0, gaphead - n);
-        for (int i = gaphead; i < gaptail; i++) {
-            gapBuffer[i] = '\0';
-        }
+       /* for (int i = gaphead; i < gaptail; i++) {
+            gapBuffer[i] = 'x';
+        }*/
 
         lineIndex =  computer.ReComputeIndex(this, p);
 
