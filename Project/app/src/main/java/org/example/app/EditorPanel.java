@@ -1,10 +1,18 @@
 package org.example.app;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import javax.swing.*;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 
 public class EditorPanel extends JPanel {
+    boolean showCaret = true;
+
+
+
     private final GapBuffer gapbuffer;
     private int cursorPos;
     String check = "Arial";
@@ -29,6 +37,12 @@ public class EditorPanel extends JPanel {
                 handleMouseClick(e);
             }
         });
+        Timer blinkTimer = new Timer(500, e -> {
+            showCaret = !showCaret;
+            repaint();
+        });
+        blinkTimer.start();
+
     }
 
     private void handlekeyPressed(KeyEvent e) {
@@ -62,7 +76,7 @@ public class EditorPanel extends JPanel {
 
             default:
                 if(!Character.isISOControl(c)){
-                    System.out.println("character is " + c);
+
                     char [] ar = new char[1];
                     ar[0] = c;
                     gapbuffer.insert(cursorPos,ar, f);
@@ -87,16 +101,27 @@ public class EditorPanel extends JPanel {
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setFont(b);
+        String [] t = gapbuffer.getText();
+        String text = t[0];
 
 
-        String text = gapbuffer.getText();
         int height = f.getHeight();
+        int caretWidth = Integer.parseInt(t[1]) ;
+        int caretHeight = Integer.parseInt(t[2]) * f.getHeight();
         int y = 20;
         int x = 10;
+        int caretX = x + caretWidth;
+        int caretY = y + caretHeight;
+
         String [] line = text.split("\n");
         for(String l : line){
             g.drawString(l, x, y);
             y += height;
+        }
+        if (showCaret){
+            int top = caretY - (height - 2);
+        g.setColor(Color.BLACK);
+        g.drawLine(caretX,top, caretX, caretY);
         }
 
     }

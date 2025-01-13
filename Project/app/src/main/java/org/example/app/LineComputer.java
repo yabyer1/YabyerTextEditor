@@ -48,6 +48,7 @@ public class LineComputer {
            if (i < gapbuff.DEFAULT_BUFFER_SIZE && gapbuff.gapBuffer[i] == '\n') {
                i++;
            }
+
        }
        return fin;
    }

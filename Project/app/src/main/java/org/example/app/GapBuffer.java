@@ -1,5 +1,7 @@
 package org.example.app;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +88,7 @@ public class GapBuffer {
 
 
 
-    public String getText() {
+    public String[] getText() {
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < gaphead; i++){
             str.append(gapBuffer[i]);
@@ -94,7 +96,30 @@ public class GapBuffer {
         for(int i = gaptail; i < DEFAULT_BUFFER_SIZE; i++){
             str.append(gapBuffer[i]);
         }
-        return str.toString();
+       // Find x and y coordinates of the gaphead to display the new cursor
+        int l = 0;
+        int h = lineIndex.size() - 1;
+
+        while(l < h){
+            int m = (l + h) / 2;
+            if(lineIndex.get(m).Sindex < gaphead){
+                    l = m;
+            }
+            else{
+                h = m - 1;
+            }
+        }
+        int y =  l; // line number (vertical height)
+        int x =  gaphead - lineIndex.get(l).Sindex ; // offset from start of line (horizontal height)
+        int xSum = 0;
+        for(int i = 0; i < x; i++){
+            xSum += lineIndex.get(l).pos.get(i);
+        }
+        return new String[]{
+                str.toString(),
+                String.valueOf(xSum),
+                String.valueOf(y)
+        };
     }
 
     public int convert(int x, int y, FontMetrics f) {
