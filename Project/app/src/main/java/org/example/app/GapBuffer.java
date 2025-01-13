@@ -151,10 +151,16 @@ public class GapBuffer {
             }
         }
         int y =  l; // line number (vertical height)
-        int x =  gaphead - lineIndex.get(l).Sindex ; // offset from start of line (horizontal height)
-        x = Math.min(x ,lineIndex.get(l).pos.size());
-        int xSum = lineIndex.get(l).pos.get(x - 1); //render after  last character before gaphead
 
+        int xSum = 0; //cumulative sum to get x dimension
+
+
+
+       if(!lineIndex.get(l).pos.isEmpty())  {
+            int x = gaphead - lineIndex.get(l).Sindex; // offset from start of line (horizontal height)
+            x = Math.min(x, lineIndex.get(l).pos.size());
+             xSum = lineIndex.get(l).pos.get(x - 1); //render after  last character before gaphead
+        }
 
 
         return new int[]{
