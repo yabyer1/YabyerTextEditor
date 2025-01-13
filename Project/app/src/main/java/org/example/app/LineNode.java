@@ -6,4 +6,6 @@ public class LineNode{
           
             int Sindex;
             ArrayList<Integer> pos = new ArrayList<>();
+
+
 }

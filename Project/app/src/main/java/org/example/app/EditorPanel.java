@@ -55,6 +55,7 @@ public class EditorPanel extends JPanel {
                 repaint();
                 break;
             case KeyEvent.VK_RIGHT:
+
                 cursorPos = Math.min(gapbuffer.DEFAULT_BUFFER_SIZE - 1, cursorPos + 1);
                 gapbuffer.MoveCursor(cursorPos);
                 repaint();
@@ -101,13 +102,12 @@ public class EditorPanel extends JPanel {
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setFont(b);
-        String [] t = gapbuffer.getText();
-        String text = t[0];
-
-
+        String text = gapbuffer.getText();
         int height = f.getHeight();
-        int caretWidth = Integer.parseInt(t[1]) ;
-        int caretHeight = Integer.parseInt(t[2]) * f.getHeight();
+        int [] t = gapbuffer.findGapHead();
+        int caretWidth = t[0] ;
+        int caretHeight = t[1] * f.getHeight();
+
         int y = 20;
         int x = 10;
         int caretX = x + caretWidth;

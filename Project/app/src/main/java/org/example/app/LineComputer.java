@@ -19,6 +19,7 @@ public class LineComputer {
             LineNode t = new LineNode();
             t.Sindex = line;
                while (line < gapbuff.gaphead && gapbuff.gapBuffer[line] != '\n') {
+
                    linewidth += f.charWidth(gapbuff.gapBuffer[line]);
                    t.pos.add(linewidth);
                    line++;
@@ -31,6 +32,7 @@ public class LineComputer {
 
 
        }
+
        i = gapbuff.gaptail;
        while(i < gapbuff.DEFAULT_BUFFER_SIZE) {
            int line = i;

@@ -88,7 +88,7 @@ public class GapBuffer {
 
 
 
-    public String[] getText() {
+    public String getText() {
         StringBuilder str = new StringBuilder();
         for(int i = 0; i < gaphead; i++){
             str.append(gapBuffer[i]);
@@ -96,30 +96,7 @@ public class GapBuffer {
         for(int i = gaptail; i < DEFAULT_BUFFER_SIZE; i++){
             str.append(gapBuffer[i]);
         }
-       // Find x and y coordinates of the gaphead to display the new cursor
-        int l = 0;
-        int h = lineIndex.size() - 1;
-
-        while(l < h){
-            int m = (l + h) / 2;
-            if(lineIndex.get(m).Sindex < gaphead){
-                    l = m;
-            }
-            else{
-                h = m - 1;
-            }
-        }
-        int y =  l; // line number (vertical height)
-        int x =  gaphead - lineIndex.get(l).Sindex ; // offset from start of line (horizontal height)
-        int xSum = 0;
-        for(int i = 0; i < x; i++){
-            xSum += lineIndex.get(l).pos.get(i);
-        }
-        return new String[]{
-                str.toString(),
-                String.valueOf(xSum),
-                String.valueOf(y)
-        };
+      return str.toString();
     }
 
     public int convert(int x, int y, FontMetrics f) {
@@ -152,5 +129,36 @@ public class GapBuffer {
             }
         }*/
         return lineIndex.get(index).Sindex + Collections.binarySearch(row, x);
+    }
+
+    public int[] findGapHead() {
+        // Find x and y coordinates of the gaphead to display the new cursor
+
+        if(lineIndex.isEmpty()){
+            return new int[] {0, 0};
+        }
+
+        int l = 0;
+        int h = lineIndex.size() - 1;
+
+        while(l < h){
+            int m = (l + h + 1) / 2;
+            if(lineIndex.get(m).Sindex < gaphead){
+                l = m;
+            }
+            else{
+                h = m - 1;
+            }
+        }
+        int y =  l; // line number (vertical height)
+        int x =  gaphead - lineIndex.get(l).Sindex ; // offset from start of line (horizontal height)
+        x = Math.min(x ,lineIndex.get(l).pos.size());
+        int xSum = lineIndex.get(l).pos.get(x - 1); //render after  last character before gaphead
+
+
+
+        return new int[]{
+               xSum, y
+        };
     }
 }
