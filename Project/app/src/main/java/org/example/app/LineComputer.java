@@ -11,47 +11,44 @@ public class LineComputer {
 
 
        ArrayList<LineNode> fin = new ArrayList<>();
-       int i = 0;
+
      //  int vert_height = f.getHeight();
-       while(i < gapbuff.gaphead) {
-           int line = i;
+           int line = 0;
            int linewidth = 0;
             LineNode t = new LineNode();
             t.Sindex = line;
-               while (line < gapbuff.gaphead && gapbuff.gapBuffer[line] != '\n') {
+               while (line < gapbuff.gaphead) {
+                    if(gapbuff.gapBuffer[line] == '\n'){
+                        fin.add(t);
+                        t = new LineNode();
+                        linewidth = 0;
+                        t.Sindex = line + 1;
+                    }
+                    else {
+                        linewidth += f.charWidth(gapbuff.gapBuffer[line]);
+                        t.pos.add(linewidth);
 
+                    }
+                   line++;
+               }
+
+
+               line = gapbuff.gaptail;
+           while (line < gapbuff.DEFAULT_BUFFER_SIZE) {
+               if (gapbuff.gapBuffer[line] == '\n') {
+                   fin.add(t);
+                   t = new LineNode();
+                   linewidth = 0;
+                   t.Sindex = line + 1;
+               }
+               else {
                    linewidth += f.charWidth(gapbuff.gapBuffer[line]);
                    t.pos.add(linewidth);
-                   line++;
 
                }
-           i = line;
-               if(i < gapbuff.gaphead && gapbuff.gapBuffer[i] == '\n')
-                   i++;
-           fin.add(t);
-
-
-       }
-
-       i = gapbuff.gaptail;
-       while(i < gapbuff.DEFAULT_BUFFER_SIZE) {
-           int line = i;
-           int linewidth = 0;
-           LineNode t = new LineNode();
-           t.Sindex = line;
-           while (line < gapbuff.DEFAULT_BUFFER_SIZE && gapbuff.gapBuffer[line] != '\n') {
-               linewidth += f.charWidth(gapbuff.gapBuffer[line]);
-               t.pos.add(linewidth);
                line++;
-
            }
-            fin.add(t);
-           i = line;
-           if (i < gapbuff.DEFAULT_BUFFER_SIZE && gapbuff.gapBuffer[i] == '\n') {
-               i++;
-           }
-
-       }
+       fin.add(t);
        return fin;
    }
 }

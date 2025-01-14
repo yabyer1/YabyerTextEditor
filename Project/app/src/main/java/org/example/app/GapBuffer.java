@@ -143,7 +143,7 @@ public class GapBuffer {
 
         while(l < h){
             int m = (l + h + 1) / 2;
-            if(lineIndex.get(m).Sindex < gaphead){
+            if(lineIndex.get(m).Sindex <= gaphead){
                 l = m;
             }
             else{
@@ -158,8 +158,13 @@ public class GapBuffer {
 
        if(!lineIndex.get(l).pos.isEmpty())  {
             int x = gaphead - lineIndex.get(l).Sindex; // offset from start of line (horizontal height)
-            x = Math.min(x, lineIndex.get(l).pos.size());
-             xSum = lineIndex.get(l).pos.get(x - 1); //render after  last character before gaphead
+           if(x <= 0) {
+                xSum = 0;
+           }
+           else {
+               x = Math.min(x, lineIndex.get(l).pos.size());
+               xSum = lineIndex.get(l).pos.get(x - 1); //render after  last character before gaphead
+           }
         }
 
 

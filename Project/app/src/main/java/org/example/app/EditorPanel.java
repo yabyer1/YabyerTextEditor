@@ -115,9 +115,11 @@ public class EditorPanel extends JPanel {
 
         String [] line = text.split("\n");
         for(String l : line){
+            System.out.println(l);
             g.drawString(l, x, y);
             y += height;
         }
+        System.out.println();
         if (showCaret){
             int top = caretY - (height - 2);
         g.setColor(Color.BLACK);
