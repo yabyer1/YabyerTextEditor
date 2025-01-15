@@ -3,6 +3,9 @@ package org.example.app;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -171,5 +174,18 @@ public class GapBuffer {
         return new int[]{
                xSum, y
         };
+    }
+    void LoadFile(final String path, FontMetrics q) throws IOException{
+        clearBuffer();
+        final String rawFile = new String(Files.readAllBytes(Paths.get(path)));
+        insert(0,rawFile.toCharArray(), q);
+
+    }
+
+    private void clearBuffer() {
+        DEFAULT_BUFFER_SIZE = 100;
+        gapBuffer = new char[DEFAULT_BUFFER_SIZE];
+         gaphead = 0;
+         gaptail = DEFAULT_BUFFER_SIZE;
     }
 }
