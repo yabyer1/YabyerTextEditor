@@ -7,17 +7,20 @@ import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class EditorPanel extends JPanel {
     boolean showCaret = true;
 
 
 
-    private final GapBuffer gapbuffer;
+    final GapBuffer gapbuffer;
     private int cursorPos;
     String check = "Arial";
     Font b = new Font(check, Font.PLAIN, 12);
     FontMetrics f = this.getFontMetrics(b);
+    private JButton openFileButton;
     public EditorPanel(){
         gapbuffer = new GapBuffer();
         cursorPos = 0;
@@ -44,6 +47,8 @@ public class EditorPanel extends JPanel {
         blinkTimer.start();
 
     }
+
+
 
     private void handlekeyPressed(KeyEvent e) {
         int code = e.getKeyCode();
@@ -115,11 +120,11 @@ public class EditorPanel extends JPanel {
 
         String [] line = text.split("\n");
         for(String l : line){
-            System.out.println(l);
+
             g.drawString(l, x, y);
             y += height;
         }
-        System.out.println();
+
         if (showCaret){
             int top = caretY - (height - 2);
         g.setColor(Color.BLACK);
